@@ -2,54 +2,58 @@ package com.looop.ncis.S01D0603.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "M_OPERATOR_MANAGE")
+@Getter
+@Setter
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "USER_ID")
-    private Long userId;
+    @Column(name = "user_id", length = 64, nullable = false)
+    private String userId;
 
-    @Column(name = "LOGIN_PASSWORD")
+    @Column(name = "login_password", nullable = false)
     private String loginPassword;
 
-    @Column(name = "PASSWORD_SETTING_DATE")
-    private LocalDateTime passwordSettingDate;
+    @Column(name = "password_setting_date", length = 8)
+    private String passwordSettingDate;
 
-    @Column(name = "GROUP_ID")
-    private Long groupId;
+    @Column(name = "group_id", length = 10)
+    private String groupId;
 
-    @Column(name = "ACCOUNT_ID")
+    @Column(name = "account_id")
     private String accountId;
 
-    @Column(name = "LAST_LOGIN_DATE_TIME")
+    @Column(name = "last_login_date_time")
     private LocalDateTime lastLoginDateTime;
 
-    @Column(name = "LOGIN_ERROR_COUNT")
+    @Column(name = "login_error_count")
     private Integer loginErrorCount;
 
-    @Column(name = "STATUS")
+    @Column(name = "status", length = 2)
     private String status;
 
-    @Column(name = "USER_NAME")
+    @Column(name = "user_name", length = 32)
     private String userName;
 
-    @Column(name = "REGISTER_DATE_TIME")
+    @Column(name = "register_date_time", updatable = false)
     private LocalDateTime registerDateTime;
 
-    @Column(name = "REGISTER_USER")
+    @Column(name = "register_user", updatable = false)
     private String registerUser;
 
-    @Column(name = "UPDATE_DATE_TIME")
+    @Column(name = "update_date_time")
     private LocalDateTime updateDateTime;
 
-    @Column(name = "UPDATE_USER")
+    @Column(name = "update_user")
     private String updateUser;
 
 }
