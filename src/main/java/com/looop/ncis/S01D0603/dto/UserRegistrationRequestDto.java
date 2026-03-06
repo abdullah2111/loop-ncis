@@ -13,7 +13,7 @@ import lombok.Data; // Requires Lombok dependency
 public class UserRegistrationRequestDto {
 
     @NotBlank(message = "Company prefix is required")
-    private String companyIdPrefix;
+    private String companyIdPrefix="T01_1DH1007999";
 
     @NotBlank(message = "User ID is required")
     @Size(max = 64, message = "User ID must be less than 64 characters")

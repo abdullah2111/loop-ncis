@@ -19,8 +19,6 @@ public class UserRegistrationController {
     private UserRegistrationService userRegistrationService;
 
 
-
-
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@Valid @RequestBody UserRegistrationRequestDto request){
         try {
