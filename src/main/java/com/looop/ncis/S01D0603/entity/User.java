@@ -17,16 +17,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id", length = 64, nullable = false)
+    @Column(name = "user_id", length = 256, nullable = false)
     private String userId;
 
     @Column(name = "login_password", nullable = false)
     private String loginPassword;
 
-    @Column(name = "password_setting_date", length = 8)
+    @Column(name = "password_setting_date", length = 100)
     private String passwordSettingDate;
 
-    @Column(name = "group_id", length = 10)
+    @Column(name = "group_id", length = 100)
     private String groupId;
 
     @Column(name = "account_id")
@@ -38,10 +38,10 @@ public class User {
     @Column(name = "login_error_count")
     private Integer loginErrorCount;
 
-    @Column(name = "status", length = 2)
+    @Column(name = "status", length = 100)
     private String status;
 
-    @Column(name = "user_name", length = 32)
+    @Column(name = "user_name", length = 102)
     private String userName;
 
     @Column(name = "register_date_time", updatable = false)

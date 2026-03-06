@@ -3,7 +3,7 @@ package com.looop.ncis.S01D0603.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.Data; // Requires Lombok dependency
+import lombok.Data;
 
 /**
  * Data Transfer Object for User Registration.
@@ -13,7 +13,7 @@ import lombok.Data; // Requires Lombok dependency
 public class UserRegistrationRequestDto {
 
     @NotBlank(message = "Company prefix is required")
-    private String companyIdPrefix="T01_1DH1007999";
+    private String companyIdPrefix;
 
     @NotBlank(message = "User ID is required")
     @Size(max = 64, message = "User ID must be less than 64 characters")
