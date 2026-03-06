@@ -23,11 +23,19 @@ public class UserRegistrationController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@Valid @RequestBody UserRegistrationRequestDto request){
-        String currentSystemUser = "SYSTEM";
+        try {
+            String currentSystemUser = "SYSTEM";
 
-        // Delegate all heavy lifting to the Service layer
-        userRegistrationService.registerUser(request, currentSystemUser);
-        return ResponseEntity.status(HttpStatus.CREATED).body("User successfully registered.");
+            userRegistrationService.registerUser(request, currentSystemUser);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body("User successfully registered.");
+
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
 
