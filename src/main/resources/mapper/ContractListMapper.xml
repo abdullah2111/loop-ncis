@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.looop.ncis.S01D1601.mapper.ContractListMapper">
+
+    <select id="S01S2002"
+            resultType="com.looop.ncis.S01D1601.dao.S01S2002Dao"
+            parameterType="com.looop.ncis.S01D1601.dao.S01S2002PrmDao">
+
+        SELECT
+        count(1) AS cnt
+        FROM
+        t_service_contract AS sct
+        LEFT OUTER JOIN
+        t_business_customer_contractor AS bcc
+        ON
+        bcc.charges_occur_business_id = sct.charges_occur_business_id
+        AND bcc.customer_id = sct.customer_id
+
+        INNER JOIN
+        t_electricity_need_contract AS enc
+        ON
+        enc.contract_id = sct.contract_id
+        AND enc.start_date <= CASE sct.contract_end_date WHEN '99991231' THEN #referenceDate# ELSE sct.contract_end_date END
+        AND enc.end_date >= CASE sct.contract_end_date WHEN '99991231' THEN #referenceDate# ELSE sct.contract_end_date END
+        LEFT OUTER JOIN
+        t_contract_type_plan AS ctp
+        ON
+        ctp.contract_type_id = enc.contract_type_id
+        AND ctp.start_date <= CASE sct.contract_end_date WHEN '99991231' THEN #referenceDate# ELSE sct.contract_end_date END
+        AND ctp.end_date >= CASE sct.contract_end_date WHEN '99991231' THEN #referenceDate# ELSE sct.contract_end_date END
+
+        LEFT OUTER JOIN
+        t_billing AS blg
+        ON
+        blg.bill_business_operator_id = sct.bill_business_operator_id
+        AND blg.bill_id = sct.bill_id
+
+        LEFT OUTER JOIN
+        t_measure_point AS msp
+        ON
+        msp.contract_id = sct.contract_id
+        AND msp.start_date <= CASE sct.contract_end_date WHEN '99991231' THEN #referenceDate# ELSE sct.contract_end_date END
+        AND msp.end_date >= CASE sct.contract_end_date WHEN '99991231' THEN #referenceDate# ELSE sct.contract_end_date END
+        ]]>
+        <dynamic prepend="WHERE">
+            <isNotEmpty prepend="AND" property="contractId">
+                sct.contract_id LIKE #contractId#
+            </isNotEmpty>
+            <isNotEmpty prepend="AND" property="contractorPhoneNumber">
+                convert_from(decrypt(bcc.contractor_phone_number1,#cryptKey#::bytea, 'aes'), 'UTF8') LIKE #contractorPhoneNumber#
+            </isNotEmpty>
+            <isNotEmpty prepend="AND" property="feedPointNumber">
+                msp.feed_point_number LIKE #feedPointNumber#
+            </isNotEmpty>
+            <isNotEmpty prepend="AND" property="oldNumber">
+                enc.old_number LIKE #oldNumber#
+            </isNotEmpty>
+            <isNotEmpty prepend="AND" property="contractorName">
+                convert_from(decrypt(bcc.contractor_name,#cryptKey#::bytea, 'aes'), 'UTF8') LIKE #contractorName#
+            </isNotEmpty>
+            <isNotEmpty prepend="AND" property="billingMailAddress">
+                (
+                convert_from(decrypt(blg.billing_mail_address1, #cryptKey#::bytea, 'aes'), 'UTF8') LIKE #billingMailAddress#
+                OR convert_from(decrypt(blg.billing_mail_address2, #cryptKey#::bytea, 'aes'), 'UTF8') LIKE #billingMailAddress#
+                OR convert_from(decrypt(blg.billing_mail_address3, #cryptKey#::bytea, 'aes'), 'UTF8') LIKE #billingMailAddress#
+                OR convert_from(decrypt(blg.billing_mail_address4, #cryptKey#::bytea, 'aes'), 'UTF8') LIKE #billingMailAddress#
+                OR convert_from(decrypt(blg.billing_mail_address5, #cryptKey#::bytea, 'aes'), 'UTF8') LIKE #billingMailAddress#
+                OR convert_from(decrypt(blg.billing_mail_address6, #cryptKey#::bytea, 'aes'), 'UTF8') LIKE #billingMailAddress#
+                OR convert_from(decrypt(blg.billing_mail_address7, #cryptKey#::bytea, 'aes'), 'UTF8') LIKE #billingMailAddress#
+                OR convert_from(decrypt(blg.billing_mail_address8, #cryptKey#::bytea, 'aes'), 'UTF8') LIKE #billingMailAddress#
+                )
+            </isNotEmpty>
+            <isNotEmpty prepend="AND" property="contractStartDateFrom">
+                <![CDATA[ sct.contract_start_date >= #contractStartDateFrom# ]]>
+            </isNotEmpty>
+            <isNotEmpty prepend="AND" property="contractStartDateTo">
+                <![CDATA[ sct.contract_start_date <= #contractStartDateTo# ]]>
+            </isNotEmpty>
+
+            <isNotEmpty prepend="AND" property="contractEndDateFrom">
+                <![CDATA[ sct.contract_end_date >= #contractEndDateFrom# ]]>
+            </isNotEmpty>
+            <isNotEmpty prepend="AND" property="contractEndDateTo">
+                <![CDATA[ sct.contract_end_date <= #contractEndDateTo# ]]>
+            </isNotEmpty>
+        </dynamic>
+
+
+
+
+
+
+
+
+    </select>
+
+</mapper>

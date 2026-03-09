@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public  class GetBusinessDate {
+public class GetBusinessDate {
     private final JdbcTemplate jdbcTemplate;
 
     public Integer getOperationDate() {
