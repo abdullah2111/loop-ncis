@@ -1,6 +1,6 @@
 package com.looop.ncis.S01D0603.service;
 
-import com.looop.ncis.S01D0603.config.SecurityConfig;
+import com.looop.ncis.config.SecurityConfig;
 import com.looop.ncis.S01D0603.dto.UserRegistrationRequestDto;
 import com.looop.ncis.S01D0603.entity.User;
 import com.looop.ncis.S01D0603.repository.UserRegistrationRepository;

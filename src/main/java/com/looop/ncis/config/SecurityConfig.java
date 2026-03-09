@@ -1,4 +1,4 @@
-package com.looop.ncis.S01D0603.config;
+package com.looop.ncis.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

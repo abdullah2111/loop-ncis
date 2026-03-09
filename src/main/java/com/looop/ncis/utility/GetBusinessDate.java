@@ -1,4 +1,4 @@
-package com.looop.ncis.S01D0603.utility;
+package com.looop.ncis.utility;
 
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
