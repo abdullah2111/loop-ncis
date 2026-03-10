@@ -1,11 +1,14 @@
 package com.looop.ncis.S01D1601.controller;
 
 import com.looop.ncis.S01D1601.dto.req.ContractRequestDTO;
+import com.looop.ncis.S01D1601.dto.res.ContractResponseDTO;
 import com.looop.ncis.S01D1601.service.ContractService;
+import com.looop.ncis.utility.PageResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,9 +22,10 @@ public class ContractController {
 
 
 
-    public ResponseEntity<?> getContractList(@Valid @RequestBody ContractRequestDTO contractRequestDTO) {
-        contractService.getContractList(contractRequestDTO);
-        return ResponseEntity.ok().build();
+    @GetMapping
+    public PageResponse<ContractResponseDTO> searchContracts(ContractRequestDTO request) {
+
+        return contractService.searchContracts(request);
     }
 
 

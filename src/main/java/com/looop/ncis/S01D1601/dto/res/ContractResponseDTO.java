@@ -1,14 +1,11 @@
-package com.looop.ncis.S01D1601.dto.req;
+package com.looop.ncis.S01D1601.dto.res;
 
 import com.looop.ncis.utility.CommonConstant;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
+@Data
+public class ContractResponseDTO {
 
-
-@Getter
-@Setter
-public class ContractRequestDTO {
     /** 契約者電話番号. */
     private String contractorPhoneNumber = CommonConstant.STR_EMPTY;
     /** 供給地点番号. */
@@ -32,11 +29,5 @@ public class ContractRequestDTO {
     /** 基準日. */
     private String referenceDate = CommonConstant.STR_EMPTY;
 
-    /** 暗号化キー. */
-    private String cryptKey = CommonConstant.STR_EMPTY;
-    /** ユーザID. */
-    private String userId = CommonConstant.STR_EMPTY;
 
-    private int page = 0;
-    private int size = 50;
 }
