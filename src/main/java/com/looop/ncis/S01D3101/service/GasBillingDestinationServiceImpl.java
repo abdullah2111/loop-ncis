@@ -4,9 +4,11 @@ import com.looop.ncis.S01D3101.dao.S01S4001Dao;
 import com.looop.ncis.S01D3101.dao.S01S4001PrmDao;
 import com.looop.ncis.S01D3101.dto.req.GasBillingDestinationReqDTO;
 import com.looop.ncis.S01D3101.dto.res.GasBillingDestinationResInfoDTO;
+import com.looop.ncis.S01D3101.dto.res.GasBillingDestinationResponseDTO;
 import com.looop.ncis.S01D3101.mapper.GasBillingDestinationMapper;
 import com.looop.ncis.utility.PageResponse;
 import lombok.AllArgsConstructor;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,10 +23,15 @@ public class GasBillingDestinationServiceImpl implements GasBillingDestinationSe
 
     private final String cryptKey ="jpsg4tdugu";
 
+    private static final int DEFAULT_PAGE_SIZE = 50;
+
     @Override
     public PageResponse<GasBillingDestinationResInfoDTO> getBillingDestinationInfo(GasBillingDestinationReqDTO request) {
+
+        int offset = request.getPage() * request.getSize();
+
+
         S01S4001PrmDao daoPrm = new S01S4001PrmDao();
-        
         daoPrm.setGBI_FEED_POINT_NUMBER((request.getGBI_FEED_POINT_NUMBER())); // 供給地点特定番号
         daoPrm.setGND_OLD_NUMBER((request.getBCC_CONTRACT_PHONE_NUMBER())); // 旧契約管理番号
         daoPrm.setGBI_BILLING_YEAR_MONTH((request.getGBI_BILLING_YEAR_MONTH())); // 対象年月
@@ -41,14 +48,19 @@ public class GasBillingDestinationServiceImpl implements GasBillingDestinationSe
         
         daoPrm.setCryptKey(cryptKey);
 
-        S01S4001Dao S01S4001 = mapper.S01S4001(daoPrm);
+        GasBillingDestinationResponseDTO total = mapper.S01S4001(daoPrm);
 
-        List<S01S4001Dao> s01S4001DaoList = mapper.S01S4002(daoPrm);
-
-
+        List<GasBillingDestinationResInfoDTO> s01S4001DaoList = mapper.S01S4002(daoPrm,  offset, request.getSize());
 
 
-        return null;
+
+
+        return new PageResponse<>(
+                s01S4001DaoList,
+                total.getCnt(),
+                request.getPage(),
+                request.getSize()
+        );
 
     }
 }

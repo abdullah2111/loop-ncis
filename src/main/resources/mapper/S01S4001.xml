@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.looop.ncis.S01D3101.mapper.GasBillingDestinationMapper">
+
+    <select id="S01S4001"
+            parameterType="com.looop.ncis.S01D3101.dao.S01S4001Dao"
+            resultType="com.looop.ncis.S01D3101.dto.res.GasBillingDestinationResponseDTO">
+
+        SELECT
+        count(1) AS cnt
+        FROM
+        t_billing bill
+        INNER JOIN m_business AS JGS
+        ON bill.charge_occur_business_id = JGS.business_id
+
+        <where>
+            <if test="GBI_FEED_POINT_NUMBER != null and GBI_FEED_POINT_NUMBER != ''">
+                AND EXISTS (
+                SELECT 1 FROM t_service_contract sct
+                INNER JOIN t_gas_bill_info AS gbi ON gbi.contract_id = sct.contract_id
+                WHERE bill.bill_business_operator_id = sct.bill_business_operator_id
+                AND bill.bill_id = sct.bill_id
+                AND gbi.feed_point_number LIKE #{GBI_FEED_POINT_NUMBER}
+                )
+            </if>
+            <if test="GND_OLD_NUMBER != null and GND_OLD_NUMBER != ''">
+                AND EXISTS (
+                SELECT 1 FROM t_service_contract sct
+                INNER JOIN t_gas_need_contract AS gnc ON gnc.contract_id = sct.contract_id
+                WHERE bill.bill_business_operator_id = sct.bill_business_operator_id
+                AND bill.bill_id = sct.bill_id
+                AND gnc.old_number LIKE #{GND_OLD_NUMBER}
+                AND gnc.deleted_flg = '0'
+                )
+            </if>
+            <if test="GBI_BILLING_YEAR_MONTH != null and GBI_BILLING_YEAR_MONTH != ''">
+                AND EXISTS (
+                SELECT 1 FROM t_service_contract sct
+                INNER JOIN t_gas_bill_info AS gbi ON gbi.contract_id = sct.contract_id
+                WHERE bill.bill_business_operator_id = sct.bill_business_operator_id
+                AND bill.bill_id = sct.bill_id
+                AND gbi.billing_year_month = #{GBI_BILLING_YEAR_MONTH}
+                )
+            </if>
+            <if test="BILLINGDESTINATION_ID != null and BILLINGDESTINATION_ID != ''">
+                AND bill.bill_id LIKE #{BILLINGDESTINATION_ID}
+            </if>
+            <if test="BILLINGPHONE_NUMBER != null and BILLINGPHONE_NUMBER != ''">
+                AND convert_from(decrypt(bill.bill_phone_number1, #{cryptKey}::bytea, 'aes'), 'UTF8') LIKE
+                #{BILLINGPHONE_NUMBER}
+            </if>
+            <if test="BILLING_NAME != null and BILLING_NAME != ''">
+                AND convert_from(decrypt(bill.billing_name, #{cryptKey}::bytea, 'aes'), 'UTF8') LIKE #{BILLING_NAME}
+            </if>
+            <if test="BILLING_NAME_KANA != null and BILLING_NAME_KANA != ''">
+                AND convert_from(decrypt(bill.billing_name_cana, #{cryptKey}::bytea, 'aes'), 'UTF8') LIKE
+                #{BILLING_NAME_KANA}
+            </if>
+            <if test="BILLING_ADDRESS != null and BILLING_ADDRESS != ''">
+                AND (
+                coalesce(convert_from(decrypt(bill.billing_address1, #{cryptKey}::bytea, 'aes'), 'UTF8'), '') ||
+                coalesce(convert_from(decrypt(bill.billing_address2, #{cryptKey}::bytea, 'aes'), 'UTF8'), '')
+                ) LIKE #{BILLING_ADDRESS}
+            </if>
+            <if test="SCT_CONTRACT_ID != null and SCT_CONTRACT_ID != ''">
+                AND EXISTS (
+                SELECT 1 FROM t_service_contract sct
+                INNER JOIN t_business_customer_contractor AS bcc ON bcc.charges_occur_business_id =
+                sct.charges_occur_business_id AND bcc.customer_id = sct.customer_id
+                WHERE bill.bill_business_operator_id = sct.bill_business_operator_id
+                AND bill.bill_id = sct.bill_id
+                AND sct.contract_id LIKE #{SCT_CONTRACT_ID}
+                )
+            </if>
+            <if test="BCC_CONTRACT_PHONE_NUMBER != null and BCC_CONTRACT_PHONE_NUMBER != ''">
+                AND EXISTS (
+                SELECT 1 FROM t_service_contract sct
+                INNER JOIN t_business_customer_contractor AS bcc ON bcc.charges_occur_business_id =
+                sct.charges_occur_business_id AND bcc.customer_id = sct.customer_id
+                WHERE bill.bill_business_operator_id = sct.bill_business_operator_id
+                AND bill.bill_id = sct.bill_id
+                AND convert_from(decrypt(bcc.contractor_phone_number1, #{cryptKey}::bytea, 'aes'), 'UTF8') LIKE
+                #{BCC_CONTRACT_PHONE_NUMBER}
+                )
+            </if>
+            <if test="BCC_CONSUMER_NAME != null and BCC_CONSUMER_NAME != ''">
+                AND EXISTS (
+                SELECT 1 FROM t_service_contract sct
+                INNER JOIN t_business_customer_contractor AS bcc ON bcc.charges_occur_business_id =
+                sct.charges_occur_business_id AND bcc.customer_id = sct.customer_id
+                WHERE bill.bill_business_operator_id = sct.bill_business_operator_id
+                AND bill.bill_id = sct.bill_id
+                AND convert_from(decrypt(bcc.consumer_name, #{cryptKey}::bytea, 'aes'), 'UTF8') LIKE
+                #{BCC_CONSUMER_NAME}
+                )
+            </if>
+            <if test="BCC_CONSUMER_NAME_KANA != null and BCC_CONSUMER_NAME_KANA != ''">
+                AND EXISTS (
+                SELECT 1 FROM t_service_contract sct
+                INNER JOIN t_business_customer_contractor AS bcc ON bcc.charges_occur_business_id =
+                sct.charges_occur_business_id AND bcc.customer_id = sct.customer_id
+                WHERE bill.bill_business_operator_id = sct.bill_business_operator_id
+                AND bill.bill_id = sct.bill_id
+                AND convert_from(decrypt(bcc.consumer_name_kana, #{cryptKey}::bytea, 'aes'), 'UTF8') LIKE
+                #{BCC_CONSUMER_NAME_KANA}
+                )
+            </if>
+            <if test="BCC_CONTRACTOR_ADDRESS != null and BCC_CONTRACTOR_ADDRESS != ''">
+                AND EXISTS (
+                SELECT 1 FROM t_service_contract sct
+                INNER JOIN t_business_customer_contractor AS bcc ON bcc.charges_occur_business_id =
+                sct.charges_occur_business_id AND bcc.customer_id = sct.customer_id
+                WHERE bill.bill_business_operator_id = sct.bill_business_operator_id
+                AND bill.bill_id = sct.bill_id
+                AND (
+                coalesce(convert_from(decrypt(bcc.contractor_address1, #{cryptKey}::bytea, 'aes'), 'UTF8'), '') ||
+                coalesce(convert_from(decrypt(bcc.contractor_address2, #{cryptKey}::bytea, 'aes'), 'UTF8'), '')
+                ) LIKE #{BCC_CONTRACTOR_ADDRESS}
+                )
+            </if>
+            AND EXISTS (
+            SELECT 1 FROM t_service_contract sct
+            WHERE bill.bill_business_operator_id = sct.bill_business_operator_id
+            AND bill.bill_id = sct.bill_id
+            AND sct.service_type = '20'
+            AND sct.deleted_flg = '0'
+            )
+        </where>
+
+
+    </select>
+
+</mapper>

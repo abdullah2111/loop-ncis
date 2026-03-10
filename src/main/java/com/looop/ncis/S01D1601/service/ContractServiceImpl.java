@@ -28,6 +28,8 @@ public class ContractServiceImpl implements ContractService {
 
         int offset = request.getPage() * request.getSize();
 
+
+
         request.setCryptKey(cryptKey);
         List<ContractResponseDTO> contracts =
                 contractMapper.S01S2003(request, offset, request.getSize());
