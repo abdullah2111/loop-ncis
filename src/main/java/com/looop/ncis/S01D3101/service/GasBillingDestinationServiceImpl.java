@@ -3,22 +3,26 @@ package com.looop.ncis.S01D3101.service;
 import com.looop.ncis.S01D3101.dao.S01S4001Dao;
 import com.looop.ncis.S01D3101.dao.S01S4001PrmDao;
 import com.looop.ncis.S01D3101.dto.req.GasBillingDestinationReqDTO;
-import com.looop.ncis.S01D3101.dto.res.GasBillingDestinationResDTO;
+import com.looop.ncis.S01D3101.dto.res.GasBillingDestinationResInfoDTO;
+import com.looop.ncis.S01D3101.mapper.GasBillingDestinationMapper;
 import com.looop.ncis.utility.PageResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class GasBillingDestinationServiceImpl implements GasBillingDestinationService {
+
+    private final GasBillingDestinationMapper mapper;
 
 //    @Value("${app.crypto.key}")
 
     private final String cryptKey ="jpsg4tdugu";
 
     @Override
-    public PageResponse<GasBillingDestinationResDTO> getBillingDestinationInfo(GasBillingDestinationReqDTO request) {
+    public PageResponse<GasBillingDestinationResInfoDTO> getBillingDestinationInfo(GasBillingDestinationReqDTO request) {
         S01S4001PrmDao daoPrm = new S01S4001PrmDao();
         
         daoPrm.setGBI_FEED_POINT_NUMBER((request.getGBI_FEED_POINT_NUMBER())); // 供給地点特定番号
@@ -37,7 +41,12 @@ public class GasBillingDestinationServiceImpl implements GasBillingDestinationSe
         
         daoPrm.setCryptKey(cryptKey);
 
-        S01S4001Dao S01S4001
+        S01S4001Dao S01S4001 = mapper.S01S4001(daoPrm);
+
+        List<S01S4001Dao> s01S4001DaoList = mapper.S01S4002(daoPrm);
+
+
+
 
         return null;
 
