@@ -22,7 +22,7 @@ public class ContractController {
 
 
 
-    @GetMapping
+    @GetMapping("/list")
     public PageResponse<ContractResponseDTO> searchContracts(ContractRequestDTO request) {
 
         return contractService.searchContracts(request);
