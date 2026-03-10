@@ -30,9 +30,9 @@ public class ContractServiceImpl implements ContractService {
 
         request.setCryptKey(cryptKey);
         List<ContractResponseDTO> contracts =
-                contractMapper.searchContracts(request, offset, request.getSize());
+                contractMapper.S01S2003(request, offset, request.getSize());
 
-        long total = contractMapper.countContracts(request);
+        long total = contractMapper.S01S2002(request);
 
         return new PageResponse<>(
                 contracts,

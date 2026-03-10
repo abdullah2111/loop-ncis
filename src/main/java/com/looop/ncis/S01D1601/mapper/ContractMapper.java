@@ -10,11 +10,11 @@ import java.util.List;
 @Mapper
 public interface ContractMapper {
 
-    List<ContractResponseDTO> searchContracts(
+    List<ContractResponseDTO> S01S2003(
             @Param("req") ContractRequestDTO request,
             @Param("offset") int offset,
             @Param("size") int size
     );
 
-    long countContracts(@Param("req") ContractRequestDTO request);
+    long S01S2002(@Param("req") ContractRequestDTO request);
 }
