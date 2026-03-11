@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/gasbillingdestination")
+@RequestMapping("/api/v1/gas-billing-destinations")
 @RequiredArgsConstructor
-public class GasBillingDestination {
+public class GasBillingDestinationController {
     private final GasBillingDestinationService gasBillingDestinationService;
 
     @GetMapping("/info")

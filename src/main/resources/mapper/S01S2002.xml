@@ -13,53 +13,50 @@
         COUNT(1) AS cnt
         FROM
         t_service_contract sct
-        LEFT JOIN
-        t_business_customer_contractor bcc
-        ON
-        bcc.charges_occur_business_id = sct.charges_occur_business_id
+
+        LEFT JOIN t_business_customer_contractor bcc
+        ON bcc.charges_occur_business_id = sct.charges_occur_business_id
         AND bcc.customer_id = sct.customer_id
 
-        INNER JOIN
-        t_electricity_need_contract enc
-        ON
-        enc.contract_id = sct.contract_id
-        AND enc.start_date <= CASE sct.contract_end_date
+        INNER JOIN t_electricity_need_contract enc
+        ON enc.contract_id = sct.contract_id
+        AND enc.start_date <=
+        CASE sct.contract_end_date
         WHEN '99991231' THEN #{referenceDate}
         ELSE sct.contract_end_date
         END
-        AND enc.end_date >= CASE sct.contract_end_date
-        WHEN '99991231' THEN #{referenceDate}
-        ELSE sct.contract_end_date
-        END
-
-        LEFT JOIN
-        t_contract_type_plan ctp
-        ON
-        ctp.contract_type_id = enc.contract_type_id
-        AND ctp.start_date <= CASE sct.contract_end_date
-        WHEN '99991231' THEN #{referenceDate}
-        ELSE sct.contract_end_date
-        END
-        AND ctp.end_date >= CASE sct.contract_end_date
+        AND enc.end_date >=
+        CASE sct.contract_end_date
         WHEN '99991231' THEN #{referenceDate}
         ELSE sct.contract_end_date
         END
 
-        LEFT JOIN
-        t_billing blg
-        ON
-        blg.bill_business_operator_id = sct.bill_business_operator_id
+        LEFT JOIN t_contract_type_plan ctp
+        ON ctp.contract_type_id = enc.contract_type_id
+        AND ctp.start_date <=
+        CASE sct.contract_end_date
+        WHEN '99991231' THEN #{referenceDate}
+        ELSE sct.contract_end_date
+        END
+        AND ctp.end_date >=
+        CASE sct.contract_end_date
+        WHEN '99991231' THEN #{referenceDate}
+        ELSE sct.contract_end_date
+        END
+
+        LEFT JOIN t_billing blg
+        ON blg.bill_business_operator_id = sct.bill_business_operator_id
         AND blg.bill_id = sct.bill_id
 
-        LEFT JOIN
-        t_measure_point msp
-        ON
-        msp.contract_id = sct.contract_id
-        AND msp.start_date <= CASE sct.contract_end_date
+        LEFT JOIN t_measure_point msp
+        ON msp.contract_id = sct.contract_id
+        AND msp.start_date <=
+        CASE sct.contract_end_date
         WHEN '99991231' THEN #{referenceDate}
         ELSE sct.contract_end_date
         END
-        AND msp.end_date >= CASE sct.contract_end_date
+        AND msp.end_date >=
+        CASE sct.contract_end_date
         WHEN '99991231' THEN #{referenceDate}
         ELSE sct.contract_end_date
         END
@@ -94,14 +91,14 @@
 
             <if test="billingMailAddress != null and billingMailAddress != ''">
                 AND (
-                convert_from(decrypt(blg.billing_mail_address1, #{cryptKey}::bytea, 'aes'),'UTF8') LIKE #{billingMailAddress}
-                OR convert_from(decrypt(blg.billing_mail_address2, #{cryptKey}::bytea, 'aes'),'UTF8') LIKE #{billingMailAddress}
-                OR convert_from(decrypt(blg.billing_mail_address3, #{cryptKey}::bytea, 'aes'),'UTF8') LIKE #{billingMailAddress}
-                OR convert_from(decrypt(blg.billing_mail_address4, #{cryptKey}::bytea, 'aes'),'UTF8') LIKE #{billingMailAddress}
-                OR convert_from(decrypt(blg.billing_mail_address5, #{cryptKey}::bytea, 'aes'),'UTF8') LIKE #{billingMailAddress}
-                OR convert_from(decrypt(blg.billing_mail_address6, #{cryptKey}::bytea, 'aes'),'UTF8') LIKE #{billingMailAddress}
-                OR convert_from(decrypt(blg.billing_mail_address7, #{cryptKey}::bytea, 'aes'),'UTF8') LIKE #{billingMailAddress}
-                OR convert_from(decrypt(blg.billing_mail_address8, #{cryptKey}::bytea, 'aes'),'UTF8') LIKE #{billingMailAddress}
+                convert_from(decrypt(blg.billing_mail_address1, #{cryptKey}::bytea, 'aes'), 'UTF8') LIKE #{billingMailAddress}
+                OR convert_from(decrypt(blg.billing_mail_address2, #{cryptKey}::bytea, 'aes'), 'UTF8') LIKE #{billingMailAddress}
+                OR convert_from(decrypt(blg.billing_mail_address3, #{cryptKey}::bytea, 'aes'), 'UTF8') LIKE #{billingMailAddress}
+                OR convert_from(decrypt(blg.billing_mail_address4, #{cryptKey}::bytea, 'aes'), 'UTF8') LIKE #{billingMailAddress}
+                OR convert_from(decrypt(blg.billing_mail_address5, #{cryptKey}::bytea, 'aes'), 'UTF8') LIKE #{billingMailAddress}
+                OR convert_from(decrypt(blg.billing_mail_address6, #{cryptKey}::bytea, 'aes'), 'UTF8') LIKE #{billingMailAddress}
+                OR convert_from(decrypt(blg.billing_mail_address7, #{cryptKey}::bytea, 'aes'), 'UTF8') LIKE #{billingMailAddress}
+                OR convert_from(decrypt(blg.billing_mail_address8, #{cryptKey}::bytea, 'aes'), 'UTF8') LIKE #{billingMailAddress}
                 )
             </if>
 
@@ -124,5 +121,4 @@
         </where>
 
     </select>
-
 </mapper>
