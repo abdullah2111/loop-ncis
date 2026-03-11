@@ -11,9 +11,9 @@ import java.util.List;
 
 @Mapper
 public interface GasBillingDestinationMapper {
-    GasBillingDestinationResponseDTO S01S4001 (S01S4001PrmDao param);
+    S01S4001Dao S01S4001 (S01S4001PrmDao param);
 
-    List<GasBillingDestinationResInfoDTO> S01S4002(S01S4001PrmDao daoPrm,
+    List<S01S4001Dao> S01S4002(S01S4001PrmDao daoPrm,
                                                    @Param("offset") int offset,
                                                    @Param("size") int size);
 

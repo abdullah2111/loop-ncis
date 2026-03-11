@@ -19,7 +19,6 @@ public class GasBillingDestinationServiceImpl implements GasBillingDestinationSe
 
     private final GasBillingDestinationMapper mapper;
 
-//    @Value("${app.crypto.key}")
 
     private final String cryptKey ="jpsg4tdugu";
 
@@ -48,16 +47,35 @@ public class GasBillingDestinationServiceImpl implements GasBillingDestinationSe
         
         daoPrm.setCryptKey(cryptKey);
 
-        GasBillingDestinationResponseDTO total = mapper.S01S4001(daoPrm);
+        S01S4001Dao countDao = mapper.S01S4001(daoPrm);
+        Long total = (countDao != null && countDao.getCnt() != null) ? countDao.getCnt() : 0L;
 
-        List<GasBillingDestinationResInfoDTO> s01S4001DaoList = mapper.S01S4002(daoPrm,  offset, request.getSize());
+        List<S01S4001Dao> detailDaos = mapper.S01S4002(daoPrm,  offset, request.getSize());
+
+
+
+        List<GasBillingDestinationResInfoDTO> resInfoList = detailDaos.stream()
+                .map(dao -> {
+                    GasBillingDestinationResInfoDTO info = new GasBillingDestinationResInfoDTO();
+                    info.setBillingId(dao.getBillingId());
+                    info.setPaymentMethod(dao.getPaymentMethod());
+                    info.setBillingName(dao.getBillingName());
+                    info.setBillingAddress(dao.getBillingAddress());
+                    info.setCustomerType(dao.getCustomerType());
+                    info.setRateOutbreakIdSearch(dao.getRateOutbreakIdSearch());
+                    info.setRateOutbreak(dao.getRateOutbreak());
+                    info.setRequestCompanyId(dao.getRequestCompanyId());
+                    info.setRateOutbreakIdDisplay(dao.getRateOutbreakIdDisplay());
+                    info.setBillingDestinationIdDisplay(dao.getBillingDestinationIdDisplay());
+                    return info;
+                }).toList();;
 
 
 
 
         return new PageResponse<>(
-                s01S4001DaoList,
-                total.getCnt(),
+                resInfoList,
+                total,
                 request.getPage(),
                 request.getSize()
         );
