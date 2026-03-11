@@ -7,7 +7,7 @@
 
     <select id="S01S4002"
             parameterType="com.looop.ncis.S01D3101.dao.S01S4001PrmDao"
-            resultType="com.looop.ncis.S01D3101.dto.res.GasBillingDestinationResInfoDTO">
+            resultType="com.looop.ncis.S01D3101.dao.S01S4001Dao">
 
         SELECT
         bill.bill_id AS billingId,

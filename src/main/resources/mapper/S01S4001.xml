@@ -7,7 +7,7 @@
 
     <select id="S01S4001"
             parameterType="com.looop.ncis.S01D3101.dao.S01S4001Dao"
-            resultType="com.looop.ncis.S01D3101.dto.res.GasBillingDestinationResponseDTO">
+            resultType="com.looop.ncis.S01D3101.dao.S01S4001Dao">
 
         SELECT
         count(1) AS cnt
